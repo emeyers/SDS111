@@ -1,0 +1,29 @@
+---
+title: "Test file"
+format: pdf
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+
+$\\$
+
+
+
+
+# Test download class material
+
+Testing that downloading class material works.
+
+
+$\\$
+
+
+
+
+
+
+
+
+
