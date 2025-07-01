@@ -1,0 +1,544 @@
+---
+title: "Homework 1"
+format: pdf
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+
+$\\$
+
+
+
+
+# Welcome to the first homework assignment!
+
+
+
+
+$\\$
+
+
+
+The purpose of this homework is to gain experience using Quarto and to practice using R. Please fill in the appropriate R code and write answers to all questions in the answer section. Once you have completed the assignment, submit a compiled pdf with your answers to Gradescope by 11pm on Monday July 7th. 
+
+If you need help with the homework, please attend the ULA office hours (or my office hours) which are listed on syllabus on Canvas and/or ask questions on [Ed Discussions](https://edstem.org/us/courses/77222/discussion). Also, if you have completed the homework, please help others out by answering questions on Ed Discussions, which will count toward your class participation grade.
+
+With this and all homework assignments, please be sure to render your document often. This will help catch any mistakes right away so you will know where the mistake was made. If you don't render often, it will be much harder to find where the errors are occurring. Consequently, it will be much harder to fix them!
+
+
+
+
+
+<!-- The R chunk below sets some parameters that will be used in the rest of the document. Please ignore it and do not modify it. -->
+```{r message=FALSE, warning=FALSE, tidy=TRUE, echo = FALSE}
+
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=60))
+#knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 45), tidy = TRUE)
+set.seed(123)  # set the random number generator to always give the same random numbers
+    
+```
+
+
+
+
+
+<!--  Please run the code in the  R chunk below once by pressing the green "play" arrow on the top right of the R chunk below. This will install packages and download data needed for this homework.  -->
+
+```{r message=FALSE, warning = FALSE, echo = FALSE, eval = FALSE}
+
+
+SDS111::download_data("usa_heights.rda")
+
+
+```
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+## Part 1: Markdown practice 
+
+
+
+As we have discussed in class, Quarto is a great way to create reproducible data analyses. To gain practice with Quarto documents, all homework problem sets will be done in Quarto.
+
+Quarto has a number of features that allow the text in your written reports to have better formatting. If you want to learn more about the syntax of Markdown, checking out the right column of [this cheatsheet could be helpful](https://github.com/rstudio/cheatsheets/raw/main/rmarkdown-2.0.pdf). As mentioned above, when answering the questions, be sure to render your Quarto document often to catch errors as soon as they are made. 
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+### Part 1.1 (5 points): Quarto Markdown formatting
+
+
+Please modify the lines of text below to change their formatting as described: 
+
+
+Make this line bold
+
+Make this line italics
+
+Make this line a second level header
+
+Make this line a bullet point
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+## Part 2: Calculations in R 
+
+
+Let's now practice running some basic computations in R. As described in class, all code in R chunks is executed when the Quarto document is rendered and results are shown in the compiled output document (i.e., the code and output will be shown in the compiled pdf document). 
+
+
+Before you start this part of the homework, please write down what time it is right now so that you know how long it took you to complete part 2 of this homework. 
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+### Part 2.1 (5 points): Yearly earnings making minimum wage
+
+The minimum wage in the United States in 2025 is $7.25 per hour. If someone works 40 hours a week for all 52 weeks in a year, what would their yearly earnings be if they are being paid the minimum wage? Please calculate this quantity by creating *meaningful* (i.e., easy to understand) object names that store the values for:
+  
+1. The minimum wage amount   
+2. The number of hour worked in a week 
+3. The number of weeks in a year   
+ 
+Then calculate the total yearly wage using the three objects you created, and store this result in another meaningful object name. Be sure to print out the value stored in this last object to "show your work" so that we can see the result of your calculation (you should do this for all homework problems). Also, in the answer section below, describe (i.e., write down) what the yearly wage is. 
+
+Hint: Using underscores `_` in your object names is highly encouraged to make them more meaningful/readable. 
+
+
+
+**Answer:** 
+ 
+```{r question_2.1}
+
+
+
+
+
+
+
+
+```
+
+
+[In 1-2 sentences, briefly describe what your calculations show]. 
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+### Part 2.2 (7 points): Elon Musk's earnings per second
+
+
+According to Forbes [Real Time Worth Calculator](https://www.forbes.com/profile/elon-musk/), Elon Musk's net worth, as of June 28th, 2025 is $407.4 billion. 
+
+Elon Musk was born on June 28th, 1971, and thus will turn 54 on June 28th 2025. Assuming he made all this money (rather than inherting it), how much money has Elon Musk made for each second he has been alive up to his 54th birthday? 
+
+To calculate this quantity, you can assume that there are 365.25 days for each year that Elon was alive.
+
+
+
+**Answer:**
+
+```{r question_2.2}
+
+
+
+
+
+
+
+
+```
+
+
+[In 1-2 sentences, briefly describe what your calculations show].  
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+
+
+### Part 2.4 (7 points): How long will it take for Elon Musk to make as much money as a minimum wage worker makes in a year?
+
+Let's now assume that Elon Musk makes $240 per second. Let's also assume that an American who makes minimum wage and works 40 hours a week for all 52 weeks in a year makes $15,000 per year.
+
+How many minutes will it take for Elon Musk to make as much money as a minimum wage worker makes in a year?
+
+
+
+**Answer:**
+
+```{r question_2.4}
+
+
+
+
+
+
+
+
+
+
+```
+
+
+[In 1-2 sentences, briefly describe what your calculations show]. 
+
+
+
+$\\$
+
+
+
+
+
+
+
+### Part 2.5 (3 points): Elon Musk's earnings while you completed this homework problem
+
+Let's continue to assume that Elon Musk makes $240 per second. Please report long it took you to complete all sections of part 2 of this homework (i.e., all questions in part 2). Then calculate how much money Elon Musk has made while you were completing this homework problem.
+
+
+**Answer:**
+
+```{r question_2.5}
+
+
+
+
+
+
+
+```
+
+[In 1-2 sentences, briefly describe what your calculations show]. 
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+
+
+## Part 3: Vectors and Data Frames
+
+
+Let's now explore vectors and data frames in R. As we discussed in class, data frames are a type of data structure that allows you to store tabular data (i.e., data that is organized in rows and columns), while vectors are a type of data structure that allows you to store a sequence of values (e.g., numbers, characters, etc.).
+
+To gain practice manipulating vectors and data frames, let's look at data on heights of US adults. In particular, we will look at data that has the average (mean) height of US adults each year from 1896 to 1996. The data comes from [Our World in Data](https://ourworldindata.org/), and was compiled by the [NCD Risk Factor Collaboration](https://www.ncdrisc.org/) based on a paper in [The Lancet](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)31859-6/fulltext).
+
+The code below loads a data frame on the average (mean) height of US adult men and women in different years as an object called `usa_heights`. The variables in the data frame are: 
+
+1. `year`: The year of the measurement
+2. `mean_male_height_cm`: The mean height of men in a given year (measured in centimeters)
+2. `mean_female_height_cm`: The mean height of women in a given year (measured in centimeters)
+
+Below the `head()` function is used to show the first few rows of the data frame. You can also use the `View()` function to see this data in RStudio (although do not include a call to `View()` in your Quarto document, since Quarto documents cannot display the output from calling this function).
+
+
+```{r question_5}
+
+load('usa_heights.rda')
+
+head(usa_heights)
+
+
+```
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 3.1 (6 points): Max male and female heights
+
+To start, extract the (mean) male heights from the `usa_heights` data frame into a vector object called `male_heights`. Likewise, extract the (mean) female heights into a vector object called `female_heights`. Also, convert data the `male_heights` and `female_heights` vectors so that the data in these vectors in is inches rather than centimeters.
+
+Hint: One centimeter is equal to 0.393701 inches. 
+
+
+**Answer:**
+
+```{r questions_3.1}
+
+
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 3.2 (6 points): Max male height
+
+Next calculate the maximum (mean) height that males had over all years. Print the results out in terms of feet and inches (i.e., you should print feet on one line, and the inches in another line), and report what your answer is in the answer section (again in feet and inches). 
+
+Hint: the following functions could be useful:
+- The `floor` round a value down (e.g., `floor(15.7)` returns 15). 
+- The `%%` operator returns the remainder of a division (e.g., `7 %% 3` returns 1, since 7 divided by 3 is 2 with a remainder of 1).
+
+
+**Answer:**
+
+
+```{r questions_3.2}
+
+
+
+
+
+
+```
+
+
+[Report, in feet and inches, what the maximum (mean) height of males was].
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 3.3 (6 points): Year of max male heights
+
+
+Now calculate the year that the males had their maximum (mean) height. In the answer section, report what year this was. 
+
+To do this you can use the `which.max()` function which will return the index of the maximum value in a vector. Then use this index to extract the year from the `usa_heights` data frame. Be sure to print out the year to "show your work" (for this, and all questions). 
+
+
+**Answer:**
+
+
+
+```{r questions_3.3}
+
+
+
+
+
+```
+
+[Report the year that males had their maximum (mean)].
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 3.4 (6 points): Maximum difference in male and female heights
+
+Finally, calculate the difference in height and female heights for each year. Then print out, and report below, the maximium difference in their heights (in inches) and the year that this maximum difference occurred. 
+
+
+**Answer:**
+
+```{r questions_3.4}
+
+
+
+
+
+
+
+```
+
+[Report maximum difference in male and female (mean) heights over all years, and the year that this maximum difference occurred]. 
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+## Part 4: (7 points) 
+
+As mentioned above, the data for part 3 of this homework comes from [Our World in Data](https://ourworldindata.org/). In this exercises, please find another data set you think is interesting from the "Our World in Data" collection. To do this, please complete the following steps:
+
+1. Go to the webpage https://github.com/owid/owid-datasets/tree/master/datasets 
+
+2. Find a data set you find interesting.
+
+3. Navigate into the directory of the data set you found, and click on the file that ends with `.csv`.
+
+4. Click on the "Raw" button on the upper right corner of the page. This will take you to a page that shows the raw data in the csv file.
+
+5. Copy the name of the data set URL from the web brower. Then in the code chunk below, paste as a string into the object called `data_set_url`. In particular, replace the string with the URL for dataset of Human Heights with the URL of the data set you found.
+
+
+The code below will load this dataset into R as an objec called `the_data`. Please print out the first few rows of the data set using the `head()` function.  
+
+In the answer section, describe what the data set is about, and what are the main variables (columns) of the data set are. Also, report one potentially interesting question you could answer with this data.
+
+
+
+
+```{r question_4}
+
+# The URL for the data on human heights is given below. Please replace this with the URL of the data set you found.
+
+data_set_url <- "https://raw.githubusercontent.com/owid/owid-datasets/refs/heads/master/datasets/Human%20Height%20-%20NCD%20RisC%20(2017)/Human%20Height%20-%20NCD%20RisC%20(2017).csv"
+
+
+
+# The code below load the data into an object called `the_data`
+the_data <- read.csv(data_set_url)
+
+
+# Print the first few rows of the data set using the head() function
+
+
+
+
+```
+
+
+**Answer:**
+
+[Describe what the data set is about and what your visualization shows]. 
+
+
+
+
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+## Reflection (3 points)
+
+
+
+Please reflect on how the homework went by filling out the homework 1 reflection survey on Canvas. To do this, you can use [this link](https://yale.instructure.com/courses/108275/quizzes/90784) or you can go to Canvas, click on the Quizzes link, and click on Reflection on homework 1 survey. 
+
+
+
+
+
+$\\$
