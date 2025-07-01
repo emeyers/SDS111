@@ -1,0 +1,333 @@
+---
+title: "Class 2 notes and code"
+format: pdf
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+$\\$
+
+
+
+
+# Quarto
+
+Quarto documents allow one to use a simple formatting syntax for authoring HTML, PDF, and MS Word documents combined with R code. For more details on using Quarto see <https://quarto.org/>.
+
+When you click the **Render** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. 
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+# Download files needed for the next two classes
+
+The code below uses the SDS111 package to get to download files needed for the next two classes. Please press the green play arrow once to download the files. Once they are downloaded you do not need to run this again. 
+
+On the homework, you will also need to start by downloading files also by pressing the green start arrow on an R chuck at the top of the document. 
+
+
+```{r download_files, echo = FALSE, eval = FALSE}
+
+# you could also try downloading these files using the SDS111 package
+library(SDS111)
+
+download_data("profiles_revised.csv")
+download_image("sds.png")
+
+
+# If you don't have the SDS111 package working yet, you can download the files using the following commands
+
+#download.file("https://raw.githubusercontent.com/emeyers/SDS111/main/ClassMaterial/images/sds.png", "sds.png", mode = "wb")
+
+
+#download.file("https://raw.githubusercontent.com/emeyers/SDS111/main/ClassMaterial/data/profiles_revised.csv", "profiles_revised.csv", mode = "wb")
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+## R Markdown syntax - basics
+
+In order to learn the syntax of R Markdown, there is a useful [cheat sheet](https://github.com/rstudio/cheatsheets/raw/main/rmarkdown-2.0.pdf).
+
+![](sds.png)
+
+
+Adding proper R Markdown formatting to homework documents will be important!
+
+
+
+$\\$
+
+
+
+
+# Running R code
+
+We can run R code inside of R chunks
+
+```{r}
+
+2 + 3
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+# Back to learning R
+
+
+## Data frames
+
+Let's now continue learning R by looking at data frames. Data frames are structed data and can also be thought of as collections of vectors.
+
+Let's look at data from the [website okcupid](https://www.okcupid.com)
+
+
+```{r data_frames_1}
+
+# library(SDS111)
+# download_data("profiles_revised.csv")
+
+profiles <- read.csv("profiles_revised.csv")
+
+#View(profiles)        # the View() function only works in R Studio!
+
+
+
+# We can extract the columns of a data frame as vector objects using the $ symbol
+the_ages <- profiles$age
+
+
+# We can get the sum of all ages of OKCupid users
+sum(the_ages)
+
+
+
+```
+
+
+
+
+$\\$
+
+
+
+
+
+We find the minimum value in a vector using the `min()` function and the maximum value using the `max()` function.
+
+How old is the oldest person in the data set? 
+
+```{r data_frames_2}
+
+
+max(the_ages)
+
+
+```
+
+We find the index (e.g., row number) of the minimum value in a vector using the `which.min()` function and the index of the maximum value using the `which.max()` function.
+
+Let's get more info about the oldest person in the data set by using the `which.max()` function to get the index of the oldest person and then using that index to extract the row from the data frame.
+
+
+```{r data_frames_3}
+
+
+# get the index of where the oldest person occured in the ages vector
+ind_max <- which.max(the_ages)
+
+
+
+# get a data frame that has the row with the oldest person
+oldest_person <- profiles[ind_max, ]
+
+oldest_person
+
+
+
+# can you get the income of the oldest person?
+
+
+
+```
+
+
+
+
+$\\$
+
+
+
+
+
+
+## Examining categorical data
+
+Categorical variables take on one of a fixed number of possible values 
+
+For categorical variables, we usually want to view:
+
+ * How many items are each category    or
+ * The proportion (or percentage) of items in each category
+
+Let's examine categorical data by looking at drinking behavior on OkCupid
+
+
+```{r categorical_1}
+
+# Get information about drinking behavior
+drinking_vec <- profiles$drinks
+
+# Create a table showing how often people drink
+drinks_table <- table(drinking_vec)
+drinks_table
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+We can create a relative frequency table using the function: `prop.table(my_table)` 
+
+Can you create a relative frequency table for the drinking behavior of the people in the okcupid data set in the R chunk below? 
+
+
+```{r categorical_2}
+
+drinks_table <- table(profiles$drinks)
+prop.table(drinks_table)
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+#### Bar plots (no pun intended)
+
+We can plot the number of items in each category using a bar plot: barplot(my_table) 
+
+Can you create a bar plot for the drinking behavior of the people in the okcupid data set? 
+
+```{r categorical_3}
+
+drinks_table <- table(profiles$drinks)
+barplot(drinks_table)
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+Is there a problem with using the bar plot function without any of the extra arguments? 
+
+[XKCD illusterates the point](https://xkcd.com/833/)
+
+Can you figure out how to fix your plot? 
+
+We can also create pie charts using the pie function
+
+```{r categorical_4}
+
+pie(prop.table(table(profiles$sex, useNA = "always")))
+
+```
+
+
+
+Some pie charts [are more informative than others](http://robslink.com/SAS/democd91/pyramid_pie.htm)
+
+
+
+
+
+
+$\\$
+
+
+
+
+![There are other websites/apps for dating as well](https://i.kym-cdn.com/photos/images/original/001/293/992/d80.jpg)
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+# Reading
+
+
+If you are interested in learning more about this data, please read the article [The Big Lies People Tell In Online Dating](https://theblog.okcupid.com/the-big-lies-people-tell-in-online-dating-a9e3990d6ae2). 
+
+
+
+
+
+
+
+
