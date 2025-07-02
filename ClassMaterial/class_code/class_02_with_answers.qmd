@@ -35,12 +35,10 @@ $\\$
 
 
 
+# Download files 
 
 
-
-# Download files needed for the next two classes
-
-The code below uses the SDS111 package to get to download files needed for the next two classes. Please press the green play arrow once to download the files. Once they are downloaded you do not need to run this again. 
+The code below uses the SDS111 package to get to download files needed for the next two classes we will need. Please press the green play arrow once to download the files. Once they are downloaded you do not need to run this again. 
 
 On the homework, you will also need to start by downloading files also by pressing the green start arrow on an R chuck at the top of the document. 
 
