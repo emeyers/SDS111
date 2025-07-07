@@ -35,6 +35,8 @@ library(SDS111)
 
 download_data("profiles_revised.csv")
 
+download_data("daily_bike_totals.rda")
+
 
 # If you don't have the SDS111 package working yet, you can download the files using the following commands
 #download.file("https://raw.githubusercontent.com/emeyers/SDS111/main/ClassMaterial/data/profiles_revised.csv", "profiles_revised.csv", mode = "wb")
