@@ -30,7 +30,7 @@ packages and download data and images needed for these exercises.  -->
 
 SDS111::download_data("billionaires_2024.csv")
 
-SDS111:download_image("billionaire_categories.png")
+SDS111::download_image("billionaire_categories.png")
 
 SDS111::download_image("tres-comas.jpg")
 
