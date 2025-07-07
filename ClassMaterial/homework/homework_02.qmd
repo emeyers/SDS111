@@ -1,0 +1,561 @@
+---
+title: "Homework 2"
+format: pdf
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+
+$\\$
+
+
+
+The purpose of this homework is to gain experience creating creating plots and calculating statistics using R. Please fill in the appropriate R code and write answers to all questions in the answer section. Once you have completed the assignment, submit a compiled pdf with your answers to Gradescope by 11pm on Monday July 14th. 
+
+If you need help with the homework, please attend the ULA office hours (or my office hours) which are listed on syllabus on Canvas and/or ask questions on [Ed Discussions](https://edstem.org/us/courses/77222/discussion). Also, if you have completed the homework, please help others out by answering questions on Ed Discussions, which will count toward your class participation grade.
+
+With this and all homework assignments, please be sure to render your document often. This will help catch any mistakes right away so you will know where the mistake was made. If you don't render often, it will be much harder to find where the errors are occurring. Consequently, it will be much harder to fix them!
+
+
+
+
+<!--  Please run the code in the  R chunk below once. This will install some
+packages and download data and images needed for these exercises.  -->
+
+```{r message=FALSE, warning = FALSE, echo = FALSE, eval = FALSE}
+
+
+SDS111::download_data("billionaires_2024.csv")
+
+SDS111:download_image("billionaire_categories.png")
+
+SDS111::download_image("tres-comas.jpg")
+
+
+```
+
+
+
+
+
+
+<!-- The R chunk below sets some parameters that will be used in the rest of the document. Please ignore it and do not modify it. -->
+```{r message=FALSE, warning=FALSE, tidy=TRUE, echo = FALSE}
+
+library(knitr)
+library(dplyr)
+
+
+# turn off some dplyr message
+options(dplyr.summarise.inform = FALSE)
+
+options(scipen=999)
+
+opts_chunk$set(tidy.opts=list(width.cutoff=60)) 
+set.seed(111)  # set the random number generator to always give the same random numbers
+    
+```
+
+
+
+$\\$
+
+
+
+
+
+
+
+
+## Who wants to be a billionaire? 
+
+
+As you know, billionaires are people who are just like you and me, except they have at least one billion dollars. In the following questions you will analyze data about billionaires created by Forbes Magazine and compiled into a data set on [Kaggle](https://www.kaggle.com/datasets/guillemservera/forbes-billionaires-1997-2023). The data set contains information on over 2,000 billionaires from May 2024. 
+
+The data on these billionaires is loaded into a data frame called `billionaires` below. Each row of the data frame corresponds to one billionaire and some of the key the variables in this data frame are: 
+
+1. `full_name`: The name of the billionaire family
+2. `age`: How old the billionaire is
+3. `country_of_citizenship`: The country where the billionaire is a citizen
+4. `business_category`: The type of business the billionaire works in
+5. `selfMade`: Whether the billionaire is self-made of inherited the wealth
+6. `gender`: The gender of the billionaire
+7. `net_worth`: The billionaire's net worth in billions of dollars
+
+
+Please use the data loaded below for part 1 to part 3 of this homework. 
+
+
+```{r billionaires}
+
+# Load the data set and convert the net worth to a numeric variable
+billionaires <- read.csv("billionaires_2024.csv")
+billionaires$net_worth <- as.numeric(gsub(" B", "", billionaires$net_worth))
+
+
+# If you would like examine the data set you can type View(billionaires) on the
+# console. However, do not include the View() function in your Quarto.
+
+
+```
+
+
+
+
+
+
+$\\$
+
+
+
+## Part 1: Descriptive statistics and plots for categorical data
+
+
+In this part of the homework you will explore categorical data about billionaires.
+
+
+
+### Part 1.1: (6 points)
+
+Use the `table()` and `prop.table()` functions to calculate the percentage of billionaires that are self-made versus inherited their wealth. Also, use these functions to calculate the percentage of billionaires who are male. 
+
+Be sure to print out these percentages in the R chunk below to "show your work". 
+
+
+
+```{r question_1.1}
+
+# Percentage of billionaires that are self-made
+
+
+
+
+
+
+
+# Percentage of billionaires that are male
+
+
+
+
+
+
+
+```
+
+**Answers:** [In 1-2 sentences, briefly describe what your calculations show]. 
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 1.2: (8 points). 
+
+Next create a pie chart that shows the number of billionaires by business category. As always, be sure to label the chart with a title and use colors that are easy to see.
+
+In the answer section, describe what you think the strengths and weakness are of this plot. 
+
+
+
+```{r question_1.2}
+#| fig-width: 8
+#| fig-height: 6  
+
+
+# Add your pie chart here...
+
+
+
+
+
+
+
+    
+```
+
+
+[In 1-5 sentences, briefly describe what you think the strengths and weaknesses are of this plot]. 
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 1.3: (8 points)
+
+Now, create a bar plot that shows the number of billionaires by business category (you code should be around 2-5 lines long). For this plot is is ok if you can't see all the category names on the x-axis. In the next exercise you will fix this issue. 
+
+In the answer section, describe what you think the strengths and weakness are of this plot. 
+
+
+**Answer:**
+
+
+```{r question_1.3}
+
+# Bar plot
+
+
+
+
+```
+
+
+[In 1-5 sentences, briefly describe what you think the strengths and weaknesses are of this plot]. 
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 1.4: (5 points) 
+
+
+In the plot above, it might be hard to see all the category names. Let's now see if you can improve on this plot by experimenting with some of the plot options. In particular, please try to create the plot in the image that is shown below: 
+
+![Bar plot of billionaires by business category](billionaire_categories.png){width=800 height=600}
+
+
+To create this plot, please modify the `barplot()` function to include additional arguments such as `las`, `cex.names`, and `col`. These options allow us to change the orientation of the axis labels, the size of the axis labels, and the color of the bars, respectively. To see these options, you can type `?barplot` in the console. You can also sort your data using the `sort()` function. 
+
+
+
+
+```{r question_1.4}
+#| fig-width: 8
+#| fig-height: 6  
+
+# Increases the margin size
+par(mar = c(5.1, 9, 4.1, 2.1))
+
+
+
+# Add your bar plot here...
+
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+## Part 2: Descriptive statistics and plots for quantitative data
+
+
+Let's now continue our exploration of billionaire's by looking at some quantitative data. 
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 2.1: (5 points)
+
+Please create a histogram of the billionaires' net worth. Be sure to label the axes and add a title to the plot, and use an appropriate number of bins to show the shape of the distribution. 
+
+In the answer section, please answer the following questions:
+
+1. Why does the x-axis extend to 200 when there doesn't appear to be any data there? 
+2. Why does it appear most billionaires have a net worth below $0 dollars? 
+
+
+
+```{r question_2.1}
+
+
+
+
+
+
+```
+
+
+
+**Answer:** 
+
+
+
+
+To answer question 1:
+
+
+
+
+
+
+To answer question 2:
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 2.2: (5 points) 
+
+Another way we have visualized quantitative data is to create box plots. Please create a boxplot of the billionaires' net worth. Be sure to label the axes and add a title to the plot. In the answer section, describe whether you think the boxplot is a better way to visualize this data compared to the histogram. 
+
+
+
+```{r question_2.2}
+
+
+
+
+```
+
+
+**Answer:** 
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+### Part 2.3: (5 points)
+
+Let's now calculate some summary statistics to quantify the central tendencies of  billionaires' net worth. In particular, calculate the mean and median net worth of billionaires. As always, be sure to print out these statistics in the R chunk below to "show your work".
+
+In the answer section, report whether the mean or the median is higher, and whether this what you would expect (and give the reasoning for your answer). 
+
+
+
+```{r question_2.3}
+
+
+
+```
+
+
+**Answer**: 
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 2.4: (5 points)
+
+Next let's look at some measures of the spread of data. Please calculate the standard deviation, interquartile range (IQR), and the first and third quartiles of the billionaires' net worth. As always, be sure to print out these statistics in the R chunk below to "show your work".
+
+Is the standard deviation higher or lower than the interquartile range? In the answer section, report whether this is what you would expect and why. 
+
+
+```{r question_2.4}
+
+
+
+
+
+
+```
+
+
+**Answer**: 
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 2.5: (5 points) 
+
+Now create a scatter plot of the billionaires' net worth as a function of their age. Be sure to label the axes and add a title to the plot. Also, be sure to use colors that are easy to see. Does there appear to be a relationship between age and net worth? If so, what is the nature of this relationship?
+
+
+```{r question_2.5}
+
+
+
+
+
+
+```
+
+
+**Answer:** 
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 2.6: (5 points) 
+
+Finally, calculate the correlation between the billionaires' age and net worth. In the answer section, report whether you think this correlation is what you would expect and why.
+
+```{r question_2.6}
+
+
+
+
+```
+
+**Answer:** 
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+## Part 3: Exploring your own data
+
+For this final question, please use a data set of your choice to create an interesting plot. You can use the data frame you found on the previous homework, or another data frame you found online. 
+
+In the answer section, report what your plot shows. 
+
+
+```{r question_3}
+
+# My data set. You should replace this where your data set (e.g., the data set you found on the previous homework or a different data set)
+data_set_url <- "https://raw.githubusercontent.com/owid/owid-datasets/refs/heads/master/datasets/Human%20Height%20-%20NCD%20RisC%20(2017)/Human%20Height%20-%20NCD%20RisC%20(2017).csv"
+
+
+# The code below load the data into an object called `the_data`
+the_data <- read.csv(data_set_url)
+
+
+
+
+
+
+
+
+```
+
+**Answer** 
+
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+## Part 4: Reading more about the OkCupid data
+
+As you know, we have been analyzing the OkCupid data in class. For the final part of this homework, let's read about some analyses one of the founders of OkCupid (Christian Rudder) did on the data from the OkCupid website. 
+
+From 2009 to 2014 OkCupid had a blog called "OkTrends" where Christian Rudder analyzed the data from users of their dating site. In this blog, Christian reported several interesting insights into dating trends and user behavior on the site. (Unfortunately, the blog was discontinued in 2014 and then brought back around 2021 although the analyses in the new blog were not very interesting).
+
+Please read the blog post titled [The Big Lies People Tell In Online Dating](https://theblog.okcupid.com/the-big-lies-people-tell-in-online-dating-a9e3990d6ae2). As you read the blog please find a quote that you find interesting. Then, on Canvas reflection form, please enter the quote you find as well as a paragraph or two on why you found the quote interesting.
+
+
+
+
+
+$\\$
+
+
+
+
+
+## Reflection (3 points)
+
+
+Please reflect on how the homework went by going to Canvas, going to the Quizzes
+link, and clicking on Reflection on homework 2.
+
+
+
+![Can you figure out who created this tequila?](tres-comas.jpg)
+

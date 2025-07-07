@@ -1,0 +1,424 @@
+---
+title: "Class 3 notes and code"
+format: pdf
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+
+$\\$
+
+
+
+
+# Downloading data files 
+
+
+We will continue to analyze the OkCupid data today. Please run the code below once to download the data. 
+
+
+```{r download_files, echo = FALSE, eval = FALSE}
+
+# you could also try downloading these files using the SDS111 package
+library(SDS111)
+
+download_data("profiles_revised.csv")
+
+
+# If you don't have the SDS111 package working yet, you can download the files using the following commands
+#download.file("https://raw.githubusercontent.com/emeyers/SDS111/main/ClassMaterial/data/profiles_revised.csv", "profiles_revised.csv", mode = "wb")
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+## Loading the OkCupid data
+
+
+Learning about statistics and plots for categorical and quantitative data, we will continue to look at the [OkCupid data](https://www.okcupid.com)
+
+The code below loads a data frame called `profiles` that contains information about people who have profiles on OkCupid.
+
+
+```{r data_frames_1}
+
+# library(SDS111)
+# download_data("profiles_revised.csv")
+
+profiles <- read.csv("profiles_revised.csv")
+
+#View(profiles)        # the View() function only works in R Studio!
+
+
+```
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+## Part 1: Analyzing categorical data
+
+
+Categorical variables take on one of a fixed number of possible values. 
+
+For categorical variables, we usually want to view:
+
+ * **Frequency table**: How many items are each category 
+ * **Relative frequency table**: The proportion (or percentage) of items in each category
+
+Let's examine categorical data by looking at drinking behavior on OkCupid
+
+
+```{r categorical_1}
+
+# Get information about drinking behavior
+drinking_vec <- profiles$drinks
+
+# Create a table showing how often people drink
+drinks_table <- table(drinking_vec)
+drinks_table
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+We can create a relative frequency table using the function: `prop.table(my_table)` 
+
+Can you create a relative frequency table for the drinking behavior of the people in the okcupid data set in the R chunk below? 
+
+
+```{r categorical_2}
+
+drinks_table <- table(profiles$drinks)
+prop.table(drinks_table)
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+### Bar plots (no pun intended)
+
+We can plot the number of items in each category using a bar plot: barplot(my_table) 
+
+Can you create a bar plot for the drinking behavior of the people in the okcupid data set? 
+
+```{r categorical_3}
+
+drinks_table <- table(profiles$drinks)
+barplot(drinks_table)
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+Is there a problem with using the bar plot function without any of the extra arguments? 
+
+[XKCD illusterates the point](https://xkcd.com/833/)
+
+Can you figure out how to fix your plot? 
+
+We can also create pie charts using the pie function
+
+```{r categorical_4}
+
+pie(prop.table(table(profiles$sex, useNA = "always")))
+
+```
+
+
+
+Some pie charts [are more informative than others](http://robslink.com/SAS/democd91/pyramid_pie.htm)
+
+
+
+
+$\\$
+
+
+
+
+
+## Part 2: Analyzing a single quantitative variable
+
+
+Let's examine the heights of OkCupid users. We can plot histograms of heights using the `hist()` function. 
+
+
+```{r quantitative_1}
+
+hist(profiles$height)
+
+hist(profiles$height, breaks = 50)
+
+
+```
+
+
+
+
+$\\$
+
+
+
+We can use the `mean()` and `median()` functions to extract measures of the central tendency for OkCupid user's heights.
+
+
+
+```{r quantitative_2}
+
+
+mean(profiles$height)
+
+
+```
+
+
+
+What went wrong? 
+
+
+We can ignore missing values using the `na.rm = TRUE` argument
+
+
+```{r quantitative_3}
+
+
+mean(profiles$height, na.rm = TRUE)
+
+median(profiles$height, na.rm = TRUE)
+
+
+```
+
+
+
+
+$\\$
+
+
+
+
+
+We can add lines to our plots using the `abline(`) function. For example `abline(v = 60)` would add a vertical line at the value of 60. 
+
+Can you create a histogram of OkCupid user's heights add a vertical line at the mean height of OkCupid users? 
+
+
+
+```{r quantitative_4}
+
+
+hist(profiles$height, breaks = 50, xlim = c(50, 90))
+
+abline(v = mean(profiles$height, na.rm = TRUE), col = "red")
+
+
+```
+
+
+
+
+![There are other websites/apps for dating as well](https://i.kym-cdn.com/photos/images/original/001/293/992/d80.jpg)
+
+
+
+
+$\\$
+
+
+
+
+
+
+## Part 3: Quantitative data: measures of spread
+
+
+Beyond measuring the central tendency of a quantitative variable, we also want to measure the spread of the data. One statistics to characterize the spread of data is the standard deviation.
+
+Let's calculate the standard deviation of OkCupid user's heights using the `sd()` function. 
+
+
+
+```{r quantitative_5}
+
+sd(profiles$height, na.rm = TRUE)
+
+```
+
+
+We can also calculate the interquartile range (IQR) to characterize the spread of a quantitative variable. The IQR is the the 25th percentile (Q1) to the 75th percentile (Q3) of the data. It is a measure of the spread of the middle 50% of the data. The IQR is less sensitive to outliers than the standard deviation, and it is often used in boxplots to show the spread of the data.
+
+Let's calculate the  can calculate Q1 and Q3 using the `quantile()` function and the IQR using the `IQR()` function.
+
+```{r quantitative_6}
+
+# Q1 and Q3
+Q1 <- quantile(profiles$height, 0.25, na.rm = TRUE)
+Q3 <- quantile(profiles$height, 0.75, na.rm = TRUE)
+
+
+# IRQ
+inter_quartile_range <- IQR(profiles$height, na.rm = TRUE)
+
+Q1
+Q3
+inter_quartile_range
+
+Q3 - Q1
+
+```
+
+
+
+
+
+Boxplots visually show a version of a 5 number summary (min, Q1, median, Q3, max). We can create boxplots using the `boxplot()` function. 
+
+Let's create a boxplot of OkCupid user's heights.
+
+
+```{r quantitative_7}
+
+boxplot(profiles$height, ylab = "Heights (inches)", main = "OkCupid users' heights")
+
+
+```
+
+If there are extreme outliers in a plot we need to investigate them. If they are errors we can remove them, otherwise we need to take them into account. 
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+## Part 4: Plots and statistics for two quantitative variables
+
+
+
+Let's now look at data from CitiBike in New York City. How many cases are there any how many variables? What does each case corresond to? 
+
+```{r quantitative_8}
+
+# download.file("https://yale.box.com/shared/static/t3ezfphfg729x03079aajop0d3f454wm.rda", "daily_bike_totals.rda")
+
+load("daily_bike_totals.rda")
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+Scatter plots show the relationships between two quantitative variables. We can use the `plot(x, y)` function to create scatter plots. 
+
+Create a scatter plot of the maximum temperature as a function of the minimum temperature. Based on this plot predict what you think the correlation is between the minimum and maximum temperature.
+
+Once you have a prediction for the correlation, calculate the correlation between the minimum and maximum temperature using the `cor()` function.
+
+
+
+```{r quantitative_9}
+
+
+# scatter plot
+plot(bike_daily_data$min_temperature, bike_daily_data$max_temperature)
+
+
+# correlation 
+cor(bike_daily_data$min_temperature, bike_daily_data$max_temperature)
+
+
+```
+
+
+
+
+We can also create line plots using the `plot(x, y)` function. If we set the `type` argument to "o" (for "overplotted") this will add both points and a line. 
+
+Let's create a line of the number of trips as a function of the date using the `plot(x, y, type = "o")` function.
+
+
+```{r quantitative_10}
+
+plot(bike_daily_data$date, bike_daily_data$trips, type = "o")
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+
+
+
