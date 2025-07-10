@@ -1,0 +1,579 @@
+---
+title: "Class 4 notes and code"
+format: pdf
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+
+$\\$
+
+
+
+
+# Downloading data files 
+
+
+We will continue to analyze the OkCupid data today. Please run the code below once to download the data. 
+
+
+```{r download_files, echo = FALSE, eval = FALSE}
+
+# you could also try downloading these files using the SDS111 package
+library(SDS111)
+
+download_data("profiles_revised.csv")
+
+download_data("daily_bike_totals.rda")
+
+download_data("movies.Rdata")
+
+download_image("new_pipe.png")
+
+
+# If you don't have the SDS111 package working yet, you can download the files using the following commands
+#download.file("https://raw.githubusercontent.com/emeyers/SDS111/main/ClassMaterial/data/profiles_revised.csv", "profiles_revised.csv", mode = "wb")
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+## Loading the OkCupid data
+
+
+Learning about statistics and plots for categorical and quantitative data, we will continue to look at the [OkCupid data](https://www.okcupid.com)
+
+The code below loads a data frame called `profiles` that contains information about people who have profiles on OkCupid.
+
+
+```{r data_frames_1}
+
+# library(SDS111)
+# download_data("profiles_revised.csv")
+
+profiles <- read.csv("profiles_revised.csv")
+
+#View(profiles)        # the View() function only works in R Studio!
+
+
+```
+
+
+
+
+$\\$
+
+
+
+
+
+
+## Part 1: Quantitative data: measures of spread
+
+
+Beyond measuring the central tendency of a quantitative variable, we also want to measure the spread of the data. One statistics to characterize the spread of data is the standard deviation.
+
+Let's calculate the standard deviation of OkCupid user's heights using the `sd()` function. 
+
+
+
+```{r quantitative_5}
+
+
+
+
+```
+
+
+We can also calculate the interquartile range (IQR) to characterize the spread of a quantitative variable. The IQR is the the 25th percentile (Q1) to the 75th percentile (Q3) of the data. It is a measure of the spread of the middle 50% of the data. The IQR is less sensitive to outliers than the standard deviation, and it is often used in boxplots to show the spread of the data.
+
+Let's calculate the  can calculate Q1 and Q3 using the `quantile()` function and the IQR using the `IQR()` function.
+
+```{r quantitative_6}
+
+# Q1 and Q3
+
+
+
+
+
+
+# IRQ
+
+
+
+
+
+```
+
+
+
+
+
+Boxplots visually show a version of a 5 number summary (min, Q1, median, Q3, max). We can create boxplots using the `boxplot()` function. 
+
+Let's create a boxplot of OkCupid user's heights.
+
+
+```{r quantitative_7}
+
+
+
+
+
+```
+
+If there are extreme outliers in a plot we need to investigate them. If they are errors we can remove them, otherwise we need to take them into account. 
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+## Part 2: Plots and statistics for two quantitative variables
+
+
+
+Let's now look at data from CitiBike in New York City. How many cases are there any how many variables? What does each case corresond to? 
+
+```{r quantitative_8}
+
+# download.file("https://yale.box.com/shared/static/t3ezfphfg729x03079aajop0d3f454wm.rda", "daily_bike_totals.rda")
+
+load("daily_bike_totals.rda")
+
+```
+
+
+
+$\\$
+
+
+
+
+We can create line plots using the `plot(x, y)` function. If we set the `type` argument to "o" (for "overplotted") this will add both points and a line. 
+
+Let's create a line of the number of trips as a function of the date using the `plot(x, y, type = "o")` function.
+
+
+```{r quantitative_10}
+
+
+
+
+```
+
+
+
+
+
+Scatter plots show the relationships between two quantitative variables. We can use the `plot(x, y)` function to create scatter plots. 
+
+Create a scatter plot of the maximum temperature as a function of the minimum temperature. Based on this plot predict what you think the correlation is between the minimum and maximum temperature.
+
+Once you have a prediction for the correlation, calculate the correlation between the minimum and maximum temperature using the `cor()` function.
+
+
+
+```{r quantitative_9}
+
+
+# scatter plot
+
+
+
+# correlation 
+
+
+
+```
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+## Part 3: Data wrangling with dplyr 
+
+
+We can use the package dplyr to wrangle data. dplyr is part of the 'tidyverse'
+which is a collection of packages that operate on data frames.
+
+The main functions in dplyr we will use are:
+
+ * `filter()`
+ * `select()`
+ * `mutate()`
+ * `arrange()`
+ * `group_by()`
+ * `summarize()`
+
+
+Let's explore how these functions work!
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 3.1: Loading and viewing movie data
+
+
+
+To explore the dplyr functions, we will use data that consists of random sample
+of movies that were scraped from the [Rotten
+Tomatoes](https://www.rottentomatoes.com/) and [IMDB](https://www.imdb.com/)
+websites. A code book describing the variables in this data frame and be found
+on [this website](http://www2.stat.duke.edu/~mc301/data/movies.html).
+
+
+Below is code that loads the data. You can use the `View()` function from the
+console to look at the data. The `glimpse()` function in dplyr is also useful
+for getting a sense of what is in a data frame.
+
+
+How many cases and variables are in this data frame? 
+
+
+
+```{r load_movies}
+
+
+# loading the dplyr library 
+library(dplyr)
+
+
+# load the data
+load("movies.Rdata")
+
+
+# can only be run from the console
+# View(movies)
+
+
+# the dplyr glimpse() function gives a quick view of a data frame
+
+
+
+# the number of rows and columns in the data frame
+
+
+
+```
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+### Part 3.2: Filtering for only specific rows 
+
+
+
+To look at a more homogeneous data set, let's reduce our data to only feature
+films. To get this subset of the data we can use dplyr's `filter()` function. We
+will filter variable `title_type` to only have the value of "Feature Film".
+
+
+```{r filter}
+
+
+
+# let's get only the feature films
+
+
+
+# let's look at the number of cases and variables in the films data frame
+
+
+```
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+### Part 3.3: Selecting only key variables
+
+The data films data frame contains several variables we are less interesting in.
+We can reduce a data frame to just variables we are interested in using the
+`select()` function. Let's select the following variables from the data frame:
+
+1. `title`
+2. `genre`
+3. `runtime`
+4. `mpaa_rating`
+5. `critics_score`
+6. `audience_score`
+
+
+
+```{r select_vars}
+
+
+# select the relevant variables
+
+
+                
+                
+
+# look at the data frame size
+
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 3.4: Adding new variables with mutate()
+
+We can add new a variable to a data frame that is combinations of variables that
+already exist in the data frame using the `mutate()` function.
+
+Let's add a variable that is the difference between the audience_score and the
+critics_score which will tell us which movies the audience enjoyed more than
+critics did.
+
+
+
+```{r mutate}
+
+
+# create a new variable that is the difference between the audience_score and the critics_score
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 3.5: Sorting data frames with arrange()
+
+We can arrange the rows in a data frame based on the values in a variable using the `arrange()` function. 
+
+Let's arrange the data in order from lowest to highest values based on the difference between the audience and critic scores.
+
+We can also arrange data from highest to lowest using the `desc()` function. 
+
+
+
+```{r arrange}
+
+
+# arrange the data from lowest to highest values of the audience preference
+
+
+
+# arrange the data from highest values to the lowest values of the audience preference
+
+
+
+
+
+
+
+```
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 3.6: Summarizing data using the summarize() function
+
+Let's examine if critics scores are higher than audience scores on average? 
+
+
+
+```{r summarize}
+
+
+
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 3.7: Grouping data with group_by()
+
+We can group data by the values in a particular (usually categorical) variable
+using the `group_by()` method. This method does nothing on it's own, but is
+useful in conjunction with other dplyr functions, particularly the `summarize()`
+and `mutate()` functions.
+
+Let's summarize how much more audiences liked movies relative to critics
+separately for each genre of movie.
+
+
+```{r group_by}
+
+
+
+
+
+
+```
+
+
+
+$\\$
+
+
+
+
+
+### Part 3.8: The pipe operator
+
+
+The pipe operator (|>) allows us to string together a series of commands. It
+allows us to place the first argument of a function outside the function. Since
+all dplyr functions take a data frame as their first argument, and return a data
+frame as their output, this allows us to string together a chain of dplyr
+functions (like a grammar).
+
+
+Let's redo all our above analyses using the pipe operator. 
+
+
+
+```{r pipe}
+
+# filter for only feature films using the pipe operator
+
+
+
+
+
+
+
+# putting everything together
+
+
+
+
+
+
+
+
+```
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 3.9: Practice
+
+
+You now have learned a powerful set of tools to transform data in order to extract insights.
+
+
+Please explore the data further using the dplyr functions to see if you can find additional interesting trends! 
+
+
+
+
+![](new_pipe.png)
+
+
+
+
+
+
