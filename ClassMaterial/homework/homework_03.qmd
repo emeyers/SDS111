@@ -1,0 +1,707 @@
+---
+title: "Homework 3"
+format: pdf
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+
+$\\$
+
+
+
+
+
+The purpose of this homework is to practice using `dplyr` to transform data and
+`ggplot2` to visualize data. Please fill in the appropriate code and write
+answers to all questions in the answer sections, then submit a compiled pdf with
+your answers through Gradescope by 11pm on Monday July 21st.
+
+If you need help with the homework, please attend the ULA office hours (or my
+office hours) which are listed on syllabus on Canvas and/or ask questions on [Ed
+Discussions](https://edstem.org/us/courses/77222/discussion). Also, if you have
+completed the homework, please help others out by answering questions on Ed
+Discussions, which will count toward your class participation grade.
+
+With this and all homework assignments, please be sure to render your document
+often. This will help catch any mistakes right away so you will know where the
+mistake was made. If you don't render often, it will be much harder to find
+where the errors are occurring. Consequently, it will be much harder to fix
+them!
+
+
+
+
+
+<!--  Please run the code in the  R chunk below once. This will install some
+packages and download data and images needed for these exercises.  -->
+
+```{r message=FALSE, warning = FALSE, echo = FALSE, eval = FALSE}
+
+SDS111::download_data("billionaires_2024.csv")
+
+
+```
+
+
+
+
+
+<!-- The R chunk below sets some parameters that will be used in the rest of the document. Please ignore it and do not modify it. -->
+```{r message=FALSE, warning=FALSE, tidy=TRUE, echo = FALSE}
+
+library(knitr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+# turn off some dplyr message
+options(dplyr.summarise.inform = FALSE)
+
+options(scipen=999)
+
+opts_chunk$set(tidy.opts=list(width.cutoff=60)) 
+set.seed(111)  # set the random number generator to always give the same random numbers
+    
+```
+
+
+
+$\\$
+
+
+
+
+## Continuing with our analysis of billionaires 
+
+
+Let's continue analyzing data on billionaires. In particular, let's continue to use the data we used on homework 2 that was created by Forbes Magazine and compiled into a data set on [Kaggle](https://www.kaggle.com/datasets/guillemservera/forbes-billionaires-1997-2023). The data set contains information on over 2,000 billionaires from May 2024. 
+
+The data on these billionaires is loaded into a data frame called `billionaires` below. As you will recall, each row of the data frame corresponds to one billionaire and some of the key variables in this data frame are: 
+
+1. `full_name`: The name of the billionaire family
+2. `age`: How old the billionaire is
+3. `country_of_citizenship`: The country where the billionaire is a citizen
+4. `business_category`: The type of business the billionaire works in
+5. `selfMade`: Whether the billionaire is self-made or inherited the wealth
+6. `gender`: The gender of the billionaire
+7. `net_worth`: The billionaire's net worth in billions of dollars
+
+
+Please use the data loaded below for part 1 and part 2 of this homework. 
+
+
+```{r billionaires}
+
+# Load the data set and convert the net worth to a numeric variable
+billionaires <- read.csv("billionaires_2024.csv")
+billionaires$net_worth <- as.numeric(gsub(" B", "", billionaires$net_worth))
+
+
+# If you would like examine the data set you can type View(billionaires) on the
+# console. However, do not include the View() function in your Quarto
+# document.
+
+
+```
+
+
+
+$\\$
+
+
+
+
+
+## Part 1: Using dplyr to calculate summary statistics
+
+
+To start this homework, you will use the dplyr package to transform the data and create summary statistics. The relevant readings for this part of the homework is:
+
+ * R for Data Science [chapter 3](https://r4ds.hadley.nz/data-transform.html)
+
+
+
+For all plots in **part 1** of this homework, please **only use base R plotting functions**, such as `hist()`, `barplot()`, and `plot()`. Do not use ggplot2 for this part of the homework, and instead you will use ggplot on part 2 of the homework.
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 1.1: (3 points)
+
+As a warm-up, please use dplyr to create a data frame that has the mean and median net worth of all billionaires. Be sure to print out this data frame in the R chunk below to "show your work".
+
+
+```{r question_1.1}
+
+
+
+
+
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 1.2: (5 points)
+
+Now let's create a data frame called `billionaires2` that has all the same variables as `billionaires`, but also includes a new variable called `billions_per_year`. This variable should be calculated by dividing the billionaires' net worth by their age. In other words, you will use the `mutate()` function to create a new variable that is the billionaires' net worth divided by their age. This will give us a measure of how much wealth they have accumulated per year of their life.
+
+Once you have added the variable `billions_per_year` to the `billionaires2` data frame, create a histogram of this variable (as mentioned above, please use base R plot functions for all plots in this part of the homework, and only use ggplot for part 2 of this homework onward). As always, be sure to label the axes and add a title to the plot. In the answer section, explain whether the shape of this histogram surprises you and why.
+
+
+```{r question_1.2}
+
+
+
+
+
+
+
+
+
+```
+
+
+**Answer**: 
+
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 1.3: (5 points)
+
+Now, let's now explore how billionaires differ between countries. To start this analysis, let's create a new data frame called `billionaire_countries` that has a new column called `n_country` which counts the number of billionaires that are citizens of each country. Hint: using `group_by()` and `mutate()` will be helpful here.
+
+Once you have added this column, reduce the `billionaire_countries` data frame so that it only has the variables `last_name`, `net_worth`, `country_of_citizenship`, and `n_country`. Finally, please print out the first 6 rows of `billionaire_countries` data frame using the `head()` function to "show your work".
+
+
+
+```{r question_1.3}
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+
+### Part 1.4: (5 points)
+
+Now using the `billionaire_countries`, create a new data frame called `billionaires_50plus` that only has billionaires that are citizens of countries that have more than 50 billionaires; i.e., this data frame should only have rows for billionaires that come from countries that have at least 50 billionaires. Save this data frame to the object name `billionaires_50plus`.  
+
+Then, using the `billionaires_50plus` data frame, create a bar plot that shows the number of billionaires in each country that has more than 50 billionaires. Be sure to label the axes and add a title to the plot. 
+
+
+```{r question_1.4}
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 1.5: (5 points)
+
+Next, let's calculate the mean and median net worth of billionaires from each country that has more than 50 billionaires. To do this, use the `billionaires_50plus` data frame you created in the previous question.
+Then, create a new data frame that has the mean and median net worth of billionaires from each country that has more than 50 billionaires, along with the number of billionaires in each country. Order this data frame by the mean net worth of the billionaires in each country. Finally, print out this data frame to "show your work".
+
+In the answer section, report which country has the highest mean net worth of billionaires. 
+
+
+```{r question_1.5}
+
+
+
+
+
+
+
+
+```
+
+
+**Answer**: 
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+## Part 2: Data visualization with ggplot2
+
+In this part of the homework, you will use ggplot to visualize data. In particular, let's some of the figures we created on homework 2, but this time let's use ggplot!
+
+Relevant readings for this part of the homework are:
+
+ * R for Data Science [chapter 9](https://r4ds.hadley.nz/layers.html)
+ * R for Data Science [chapter 10](https://r4ds.hadley.nz/EDA.html)
+ * R for Data Science [chapter 11](https://r4ds.hadley.nz/communication.html)
+
+
+
+
+$\\$
+
+
+
+### Part 2.1: (5 points)
+
+
+Let's start by recreating the bar plot plotting the number of billionaires in each business category but this time using ggplot. As always, be sure to label your axes and add a title to the plot. Also, to make the axis labels non-overlapping, add the theme as:
+
+`theme(axis.text.x = element_text(angle = 45, hjust = 1))`
+
+
+
+```{r question_2.1}
+
+library(ggplot2)
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+$\\$
+
+
+
+
+### Part 2.2: (5 points)
+
+Now let's create the histogram of the net worth of billionaires. In your histogram, please set the following attributes:
+
+* Use 50 bins in your histogram
+* Make the color of the bars light blue 
+* Set the color of the outline of the bars to black. 
+
+Also, use the theme `theme_minimal()` to make the plot cleaner looking. 
+
+
+```{r question_2.2}
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+### Part 2.3: (5 points)
+
+Finally, let's recreate the scatter plot that show the net worth of billionaires as a function of their age. In this scatter plot, set the color of the points to be purple and again use theme minimal to make the plot cleaner looking. 
+
+
+```{r question_2.3}
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+## Part 3: Comparing visualizations using ggplot
+
+
+Let's now use ggplot to compare different visualizations to see what is the most effective way to visualize data!
+
+The data we will use for this part of the homework contains information on the (mean) height of men and women from different countries recorded from 1896 to 1996. The data comes from [Our World in Data](https://ourworldindata.org/), and you analyzed a modified version of this data set on homework 1. Some of the key variables are: 
+
+- `Entity`: The country or region
+- `Year`: The year of the measurement
+- `Mean.male.height..cm.`: The (mean) heights of males in centimeters (for a given country in a given year)
+- `Mean.female.height..cm.`: The (mean) heights of females in centimeters (for a given country in a given year)
+
+
+The code below loads the data into a data frame called `height_data`.
+
+```{r question_3.0}
+
+data_set_url <- "https://raw.githubusercontent.com/owid/owid-datasets/refs/heads/master/datasets/Human%20Height%20-%20NCD%20RisC%20(2017)/Human%20Height%20-%20NCD%20RisC%20(2017).csv"
+
+
+# The code below load the data into an object called `the_data`
+height_data <- read.csv(data_set_url)
+
+
+# If you would like examine the data set you can type View(height_data) on the
+# console. However, do not include the View() function in your Quarto
+# document.
+
+```
+
+
+
+
+$\\$
+
+
+
+### Part 3.1: Data tranformations (5 points)
+
+To start our analysis, let's use dplyr to reduce the data set to a subset of data that we will visualize in the rest of this part of the homework. In particular, we will only focus on comparing the United States and Canada and will only focus on the heights of women. 
+
+To make it easier to visualize the data in the rest of this part of the homework, please create a data frame called `usa_canada` that has the following properties:
+
+1. It only contains the columns `Entity`, `Year` and  `Mean.female.height..cm.`
+2. It only contains data from the United States and Canada
+
+Once you have created the `usa_canada` data frame, print out the first 6 rows to "show your work".
+
+
+```{r question_3.1}
+
+
+
+
+
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+# Part 3.2: Boxplots and violin plots (5 points)
+
+To start visualizing the data, please create side-by-side boxplots comparing the (mean) heights of women in the United States and Canada (over the years 1896 to 1996). Then, create a second plot that makes this comparison using violin plots. Also, make these plots have different colored fills for the United States and Canada in both plots.
+
+In the answer section, report what these visualizations show, and whether you think the boxplot or the violin plot is more informative.
+
+
+
+```{r question_3.2}
+
+
+
+
+
+
+
+
+
+
+```
+
+
+**Answer**: 
+
+
+
+
+
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+# Part 3.3: Histograms (5 points)
+
+Let's now compare the (mean) heights in these two countries using histograms. Please make your plot have the following properties:
+
+1. You should create a separate histogram for the United States and Canada using `facet_wrap()`
+
+2. You should fill each histogram with the color of the country (i.e., the United States should be one color and Canada should be another color).
+
+3. The edges of the bars in the histogram should be black. 
+
+4. As always, the plot should be labeled. 
+
+In the answer section, report what this plot shows and whether you think it is more or less informative than the boxplot and violin plot you created in the previous question.
+
+
+```{r question_3.3}
+
+
+
+
+
+
+
+
+
+```
+
+
+**Answer**:
+
+
+
+
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+# Part 3.4: Line plot (5 points)
+
+Now let's compare the heights of these two countries using a line plot. In particular, create a line plot that plots the mean heights as a function of the year, which a separate colored line for the United States and Canada. 
+
+In the answer section, report what this plot shows and whether you think it is more or less informative than the boxplot, violin plot, and histograms you created in the previous questions.
+
+
+
+```{r question_3.4}
+
+
+
+
+
+
+
+```
+
+
+**Answer**: 
+
+
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+# Part 3.5: Visualizing transformed data (5 points)
+
+Finally, let's visualize a transformed version of the data. The code below uses the `tidyr` package to create a data frame called `usa_canada_wider` that the data transformed into a "wider" format. In particular, the `usa_canada_wider` data frame has a separate column for the mean height in the United States and a separate column for the mean height in Canada for each year. 
+
+
+```{r wider_data}
+
+
+library(tidyr)
+
+
+# This code is only run once the usa_canada data frame has been created
+if(exists("usa_canada")) {
+  
+  usa_canada_wider <- usa_canada |>
+  select(Year, Entity, Mean.female.height..cm.) |>
+  pivot_wider(names_from = Entity, values_from = Mean.female.height..cm.) 
+
+  head(usa_canada_wider)
+
+}
+  
+
+```
+
+
+Please use the `usa_canada_wider` data frame to create another visualization of the data that you think is interesting/informative. If you find it useful, you can mutate the `usa_canada_wider` data frame to create a new variables that are of interest. In the answer section, explain what your plot shows and what the strengths and weaknesses of the plot are relative to some of the other plots you created in this part of the homework (e.g., do you think the plot you created in this part is better or worse than the other plots you created in other parts of this section of the homework? Why?).
+
+
+```{r question_3.5}
+
+
+
+
+
+
+
+
+
+```
+
+
+**Answer**: 
+
+
+
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+## Part 4: Explore your own data (7 points)
+
+
+For this final part of the homework, please find your own data set and create an interesting visualization of it. This data set can be the same one you found in previous homework, or it can be a different data set from Our World in Data or from another website. For a list of other sources of data, please see the Data Sources link on the left of Canvas. 
+
+In the answer section, describe the data that you found, and what your visualization is showing. 
+
+
+Note: I recommend you take some time to find an interesting data set now that you can potentially use for additional analyses since you will be analyzing your own data for the final homework next week so this will save you some time next week (when you will also have to begin studying for the exam). 
+
+
+```{r}
+
+
+
+
+
+
+
+
+
+```
+
+
+**Answer**: 
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+## Reflection (3 points)
+
+
+Please reflect on how the homework went by going to Canvas, going to the Quizzes
+link, and clicking on Reflection on homework 3.
+
+
+
+
+
