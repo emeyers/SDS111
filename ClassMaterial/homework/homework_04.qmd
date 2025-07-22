@@ -1,0 +1,562 @@
+---
+title: "Homework 4"
+format:
+  closeread-html:
+    embed-resources: true
+    cr-section:
+      layout: "sidebar-left"
+    cr-style:
+       narrative-background-color-overlay: '#006400'
+       narrative-background-color-sidebar: '#006400'
+       narrative-text-color-overlay: '#FFFFFF'
+       narrative-text-color-sidebar: '#FFFFFF'
+       section-background-color: '#FFFFF'
+       narrative-font-family: 'AccanthisADFStd-Bold'
+       poem-font-family: 'AccanthisADFStd-Bold'
+       narrative-font-size: '18pt'
+---
+
+
+
+
+
+<!--  
+
+The purpose of this homework is to gain experience creating a Quarto Closeread
+scrollytelling document that brings together much of what you have learned in
+this class. A draft version of this Quarto document, along with the compiled
+.html document, must be submitted to Canvas by 11pm on Monday June 28th
+(however, I strongly recommend you submit your draft earlier so that you have
+some dedicated time to study for the final exam). You will be able to then
+revise your draft, and then submit a final version of the quarto/html document
+by 10pm on Wednesday June 30th.
+
+This document itself serves as a template for creating your Closeread
+scrollytelling document. It lays out sections and basic elements that should be
+in your scrollytelling document and describes a little about these sections.
+However, there is a fair amount of flexibility to deviate from this structure.
+
+In order to receive full credit for this homework, your scrollytelling document
+must contain the following elements:
+
+1. It should load a data set that you found on the internet (e.g., using the
+read.csv() function as you did on the first homework). (10 points). 
+
+2. It should use the dplyr library to either transform the data into a format
+you later use in our analyses, and/or it should use dplyr to creating summary
+statistics that are relevant to your analyses. (15 points)
+
+3. It should use ggplot2 to create one or more visualizations of the data that
+give insight into your question of interest. (25 points)
+
+4. It should contain at least one Closeread zooming and/or highlighting feature. 
+(10 points).
+
+5. It should tell a (a hopefully interesting) story about the data that using 
+scrollytelling elements (i.e., using narrative text that describes what is
+in the stickies). (20 points).
+
+6. The document should be visually appealing; i.e., you should choose a nice
+color scheme, your fonts should be a reasonable size, and you should pay
+attention to detail so that there is not miscellaneous irrelevant material in 
+your document. (15 points).
+
+
+
+In order to create your scrollytelling document, I recommend you use the
+following procedure:
+
+1. Find a data set that you are interested in analyzing, and outline the
+analyses that  you would like to do on the data. In particular, sketch out the
+figures you would like to create, the statistics you are interested in
+calculating, and the general story you would like to tell. Doing this on paper
+before writing any code could be useful.
+
+2. Once you have a good idea of what you want to do, I would recommend creating
+a new Quarto document or R script and creating all your analyses in this
+separate document. This will allow you to focus on the analyses without worrying
+about the scrollytelling elements.
+
+3. Finally, once you have created all your plots/analyses, you can then copy
+them into this Quarto/Closeread document and add the narrative text to create
+a final scrollytelling document. 
+
+
+As always if you need help with the homework, please attend the ULA office hours 
+(or my office hours). You can also ask questions on [Ed
+Discussions](https://edstem.org/us/courses/77222/discussion) although some of
+the issues might be harder to debug over Ed so attending in person office hours
+are highly recommended. Also, as always, please help others out by answering 
+questions on Ed Discussions and/or helping each other in person. 
+
+With this homework assignments, it is particularly important to render your
+document often to catch any mistakes right away so you will know where the
+mistake was made. If you don't render often, it will be much harder to find
+where the errors are occurring. Consequently, it will be much harder to fix
+them!
+
+Notes: 
+
+1. This is a challenging assignment. Try your best to come up with an
+interesting story that includes the elements listed above. We will be relatively
+relaxed in the grading of this assignment as long as a good effort was put in.
+Also, remember that you need to study for the final exam so please manage your
+time (and ambition on this project) accordingly.
+
+2. This shiny app I created could be useful for figuring out colors and other
+elements to use in your scrollytelling document: https://ethan-meyers-test.shinyapps.io/scrollytellr/
+
+
+--> 
+
+
+
+
+<!--  
+
+Please run the code in the  R chunk below once. This will install the
+Closeread quarto extension directory called _extensions that is needed to create
+Closeread documents. 
+
+-->
+
+
+```{r message=FALSE, warning = FALSE, echo = FALSE, eval = FALSE}
+
+install_closeread <- function() {
+  system("quarto add --no-prompt qmd-lab/closeread")
+}
+
+install_closeread()
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+## Introduction 
+
+<!--  
+
+Please describe:
+
+1. What question you are addressing here. 
+
+2. A bit of information about the data you will analyze; i.e., where you got the
+data from, including a link to the website where you got the data if applicable.
+
+3. State whether you believe the data is reliable or not.
+
+--> 
+
+
+Delete this text and change to to briefly describe what your analyses is about;
+e.g., "In this document we will look at how the weight of cars effects their 
+fuel efficiency."
+
+
+**Questions I will look at are:**
+
+1. X
+
+2. Y
+
+3. Z
+
+The data comes from ...
+
+How reliable is the data ...
+
+
+
+
+
+$\\$
+
+
+
+
+
+## Loading and tranforming the data
+
+
+
+<!--  
+
+Briefly discuss how you transformed the data into shape for your analyses.
+Please include the code you used to load and transform the data below describe:
+
+1. What transformations you did to the data, and why you did them.
+
+2. The key variables of interest in the data that you will analyze. 
+
+
+--> 
+
+
+Delete this text and in a couple of sentences, briefly state how you are
+transforming the data.
+
+
+
+
+
+$\\$
+
+
+$\\$
+
+
+
+::::{.cr-section}
+
+
+Delete/change the text below to make it relevant for your project...
+
+
+We will cheat here and use the built in `mtcars` data rather than loading our own data [@cr-load_data]{highlight='1-6'}
+
+Let's use dplyr to transform the data [@cr-transform_data]{highlight='1'}
+
+In particular, let's add on the model name of each car and only select a few
+columns of interest [@cr-transform_data]{highlight='2-6'}
+
+
+The relevant variables for my analyses are:  
+- `car_model`: The name of the car model (as a string)   
+- `wt`: The weight of each car (in 1000 lbs)  
+- `mpg`: The miles per gallon (fuel efficiency) of each car                   
+- `cyl`: The number of cylinders the engine has @cr-display_data     
+
+
+
+
+:::{#cr-load_data}
+
+
+```{r load_data, warning = FALSE, message = FALSE, echo = TRUE}
+
+head(mtcars)
+
+
+
+```
+
+:::
+
+
+
+:::{#cr-transform_data}
+
+```{r transform_data, echo = TRUE, message = FALSE, warning = FALSE}
+
+library(dplyr)
+
+cars_smaller <- mtcars |>
+  tibble::rownames_to_column(var = "car_model")|>
+  select(car_model, wt, mpg, cyl)
+  
+```
+
+:::
+
+
+
+
+:::{#cr-display_data}
+
+
+```{r display_initial_data, echo = FALSE, message = FALSE, warning = FALSE}
+
+head(cars_smaller)
+
+```
+
+
+:::
+
+
+
+
+::::
+
+
+
+$\\$
+
+
+## Results
+
+
+
+<!--  
+
+Create one or more plots and  summary statistics of your data. Using scrollytelling
+narrative text, please describe:
+
+1. What the plots/analyses show.
+
+2. Why they are of interest to your analysis. 
+
+
+Please be sure to make plots as clear as possible (clear axis labeling, legends
+and captions, and using an appropriate type of visualization) so that it is easy
+for the reader to quickly understand the central information being conveyed.
+
+--> 
+
+
+
+### Analysis 1: Change title here
+
+
+$\\$
+
+
+Delete this text (and change the title above) to say what this analysis is
+about; e.g., "To look at fuel efficiency, we will plot the weight of each car
+against the number of miles per gallon (mpg) each car gets. We will also color
+the points by the number of cylinders each car has."
+
+
+
+$\\$
+
+$\\$
+
+
+::::{.cr-section}
+
+
+Here we plot the mpg of each car as a function of the weight colored by how many cylinders the engine has. @cr-mpg_wt
+
+As we can see by the downward slope of points, cars that weigh more have worse fuel efficiency (mpg). @cr-mpg_wt
+
+
+These car seems to have the best mpg. [@cr-mpg_wt]{pan-to="100%, 50%" scale-by="3"}
+
+
+
+:::{#cr-mpg_wt}
+
+```{r result_1, echo = TRUE}
+
+
+library(ggplot2)
+
+mtcars |>
+  ggplot(aes(x = wt, y = mpg, col = factor(cyl))) + 
+  geom_point()
+
+
+```
+
+:::
+
+
+
+
+
+
+::::
+
+
+
+
+
+$\\$
+
+
+
+
+
+### Analysis 2: Change title here
+
+
+$\\$
+
+
+Delete this text (and change the title above) to say what this analysis is
+about; e.g., "Let's look at an interactive version of the plot..."
+
+
+
+
+$\\$
+
+$\\$
+
+
+
+::::{.cr-section}
+
+
+Let's look at an interactive version of the plot so you can examine individual cars  [@cr-interactive]
+
+
+
+
+:::{#cr-interactive}
+
+
+```{r result_2, message=FALSE, warning= FALSE, echo = TRUE}
+
+library(plotly)
+
+g <- cars_smaller |>
+  ggplot(aes(x = wt, y = mpg, col = factor(cyl), name = car_model)) + 
+  geom_point()
+
+
+ggplotly(g)
+
+
+```
+
+:::
+
+
+
+
+
+
+
+
+
+::::
+
+
+
+$\\$
+
+
+
+### Analysis 3: Change title here
+
+
+$\\$
+
+
+Delete this text (and change the title above) to say what this analysis is
+about. It is not necessary to have three analyses, but you can if you want to or
+you can have more than 3 analyses if you'd like. You can also show multiple
+plots and/or summary statistics in a single section of the document (see 
+my example answers for this homework for an example of this).
+
+
+
+
+$\\$
+
+
+$\\$
+
+
+
+::::{.cr-section}
+
+
+Another section here
+
+
+:::{#cr-another_sticky}
+
+```{r result_3, message=FALSE, echo = TRUE, warning= FALSE}
+
+
+
+
+
+```
+:::
+
+
+
+:::{#cr-yet_another_sticky}
+```{r result_4, message=FALSE, echo = TRUE, warning= FALSE}
+
+
+
+
+
+```
+:::
+
+
+
+::::
+
+
+
+
+
+
+$\\$
+
+
+## Conclusion 
+
+
+
+<!--  
+
+Please summarize what you found, and possible future directions. 
+
+-->
+
+
+
+Delete the text below and add relevant text here (example text is below).
+
+In this analysis, we explored car weight is related to fuel efficient. We found that:
+
+1. X
+
+2. Y
+
+3. Z
+
+Questions that remain are ... Limitations of the data is that it is from 1977.
+
+
+$\\$
+
+
+
+## Reflection
+
+
+<!--  
+
+Reflection  
+
+Write one paragraph describing what went well with this project and what was
+more difficult. Also describe any additional things you tried that you did not
+end up including in this write-up, and approximately how much time you spend
+working the project.
+
+Finally, please go to Canvas and submit this Closeread Quarto document, along
+with the rendered .html document. Also, fill out the reflection questions to let
+know how the this homework went.
+
+
+-->
+
+
+
+Delete this and add your reflection here describing how the project went. Also,
+add your reflection to Canvas in the survey where you upload this assignment. 
+
+
+
+
+
+
