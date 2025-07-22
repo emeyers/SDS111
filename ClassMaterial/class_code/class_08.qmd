@@ -1,0 +1,744 @@
+---
+title: "Class 8 notes and code"
+format: pdf
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+
+$\\$
+
+
+
+
+# Downloading data files 
+
+
+Let's download the data files we will need for today's class
+
+
+```{r download_files, echo = FALSE, eval = FALSE}
+
+# you could also try downloading these files using the SDS111 package
+library(SDS111)
+
+download_data("amazon.rda")
+
+download_data("x_y_join.rda")
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+## Part 1: Visual hypothesis tests
+
+
+In "visual hypothesis tests", we assess whether we can identify which plot
+contains relationships in the data, from plots that show scrambled versions of
+the data. For more information about these tests, and an R package that
+implements these tests, see:
+
+- https://cran.r-project.org/web/packages/nullabor/vignettes/nullabor.html
+- https://vita.had.co.nz/papers/inference-infovis.pdf
+
+
+
+$\\$
+
+
+
+
+
+### Part 1.1: An example problem
+
+Let's run a visual hypothesis test to see if there is a correlation between the
+number of pages in a book and the price. We can start by stating the null and
+alternative hypothesis:
+
+**In words:** 
+
+*Null hypothesis*: there is no relationship between the  number of pages in a book and the price.
+
+*Alternative hypothesis*: books that have more pages have higher prices
+
+**In symbols:**
+
+$H_0: \rho = 0$
+
+$H_0: \rho > 0$
+
+
+
+Let's now run the visual hypothesis test!
+
+
+
+$\\$
+
+
+
+
+### Part 1.2: Running the analysis
+
+
+Let's use the `nullabor` package to run the analysis. We will use the
+`null_permute()` function to randomly shuffle the `List.Price` variable and we
+will use the `lineup()` to create a data frame that has the real data and 19
+other randomly shuffled data sets. We can then plot the real and shuffled data
+sets using `ggplot()` to see if we can identify the real one. We can also use
+the `decrypt()` function to reveal the answer about which data set is the real
+one.
+
+
+
+```{r visual_hypo_test}
+
+
+# install.packages("nullabor")
+
+library(nullabor)
+library(ggplot2)
+
+load("amazon.rda")
+
+
+
+
+
+
+
+
+
+```
+
+
+
+The `nullabor` package can be used to examine other types of relationships,
+including examining differences in word useage (word clouds) and assessing
+whether there are trends on a map.
+
+
+
+
+
+$\\$
+
+
+
+
+## Part 2: A permutation test for correlation
+
+
+
+Let's run a "permutation" hypothesis test to see if there is a correlation between the
+number of pages in a book and the price. We can start by stating the null and
+alternative hypothesis:
+
+
+
+### Step 2.1: State the null and alternative hypotheses
+
+**In words:** 
+
+*Null hypothesis*: there is no relationship between the  number of pages in a book and the price.
+
+*Alternative hypothesis*: books that have more pages have higher prices
+
+**In symbols:**
+
+
+
+
+
+
+
+
+$\\$
+
+
+### Step 2.2: Calculate the observed statistic of interest
+
+Let's calculate the actual correlation between the number of pages in a book's listed price. As you konw, we can use the `cor()` function to do this.
+
+
+```{r observed_statistic}
+
+
+
+
+
+```
+
+
+
+$\\$
+
+
+### Step 2.3: Create a "null distribution"
+
+We next need to create a "null distribution" of statistics (e.g., 10,000 statistics) that are consistent with the null hypothesis being true. This can be done by randomly shuffling the `List.Price` variable and calculating the correlation between the shuffled `List.Price` and `NumPages`. If we repeat 10,000 times using the `replicate()` function, we can get a null distribution that we can compare our actual observed correlation to. 
+
+```{r null_distribution}
+
+
+# Create a null distribution 
+
+
+
+
+# Let's look at the first 10 values of the null distribution
+
+
+
+
+
+# Let's display a histogram of the null distribution
+
+
+
+
+
+
+# Let's add a vertical line at the value of the observed statistic
+
+
+
+
+
+
+```
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+### Step 2.4: Calculate the p-value
+
+
+Now we can calculate the p-value, which is the proportion of the null distribution that is greater than or equal to the observed statistic. This will tell us how likely it is to observe a correlation as extreme as the one we calculated if the null hypothesis were true.
+
+```{r p_value}
+
+
+
+
+
+```
+
+
+
+
+$\\$
+
+
+
+### Step 2.5: Make a decision
+
+Since the p-value is small (e.g., less than 0.05), we can reject the null hypothesis and conclude that there is a statistically significant correlation between the number of pages in a book and its listed price; i.e., we can conclude that $\rho > 0$.
+
+
+$\\$
+
+
+
+
+
+## Part 3: Reshaping data with tidyr 
+
+
+We can use the `tidyr` package to pivot data between "long" and "wide" formats.
+
+Having data in different formats can be useful to calculating particular
+statistics and for visualizing data using ggplot.
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 3.1: tidyr for pivoting data longer
+
+
+Let's see if we can pivot the data to a longer format to visually compare Amazon's
+prices to the List prices of books.
+
+
+
+```{r pivoting_longer, message = FALSE}
+
+library(tidyr)
+library(dplyr)
+
+load("amazon.rda")
+
+
+# let's pivot the data longer
+
+
+
+
+
+
+# visualize as a boxplot
+
+
+
+
+
+
+# visualize as a density plot
+
+
+
+
+
+
+
+
+```
+
+
+Does it appear books on Amazon are cheaper than the listed price? 
+
+
+
+
+
+$\\$
+
+
+
+
+### Part 3.2: tidyr for pivoting data wider
+
+
+Let's pivot back wider to see if we can come up with more informative plots using ggplot. 
+
+
+
+```{r pivoting_wider}
+
+
+# pivot the data wider
+
+
+
+
+
+# visualize as a boxplot
+
+
+
+
+
+
+# visualize as a density
+
+
+
+
+
+
+
+
+```
+
+
+
+It definitely appears that Amazon's prices are lower than the List prices of books.
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+## Part 4: Joining data frames
+
+
+Often data of interest is spread across multiple data frames that need to be
+joined together into a single data frame for further analyses. We will explore
+how to do this using dplyr.
+
+
+Let's look at a very simple data set to explore joining data frames. 
+
+
+```{r}
+
+library(dplyr)
+
+
+load('x_y_join.rda')
+
+x
+y
+
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+### Part 4.1: Left join
+
+Left joins keep all rows in the left table.  
+
+Data from right table added when there is the key matches, otherwise NA as added. 
+
+Try to do a left join of the data frames x and y using their keys.
+
+
+```{r}
+
+
+
+
+```
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 4.2: Right join
+
+
+Right joins keep all rows in the right table.  
+
+Data from left table added when there is the key matches, otherwise NA as added. 
+
+Try to do a right join of the data frames x and y using their keys.
+
+
+```{r}
+
+
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 4.3: Inner join
+
+
+Inner joins only keep rows in which there are matches between the keys in both tables
+
+Try to do an inner join of the data frames x and y using their keys.
+
+
+```{r}
+
+
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 4.4: Full join
+
+Full joins keep all rows in both table.  
+
+NAs are added where there are no matches.
+
+
+
+
+```{r}
+
+
+
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 4.5a: Duplicate keys
+
+
+Duplicate keys are useful if there is a one-to-many relationship (duplicates are usually in the left table). 
+
+Let's look at two other tables that have duplicate keys
+
+
+
+```{r}
+
+x2
+y2
+
+nrow(x2)
+nrow(y2)
+
+
+```
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+### Part 4.5b: Duplicate keys
+
+
+If both tables have duplicate keys you get all possible combinations (Cartesian
+product). This is almost always an error! Always check the output dimension
+after you join a table because even if there is not a syntax error you might not
+get the table you are expecting!
+
+
+Try doing a left join on the data frames x2 and y2 using only their first keys
+(i.e., key1_x and key1_y). Save the joined data frame to an object called
+`x2_joined`. Note that `x2_joined` has more rows than the original `x2` data
+frame despite the fact that you did a left join!  This is due to duplicate keys
+in both x2 and y2.
+
+Usually a mistake was made when a data frame ends up having more rows after a
+left join. It is good to check how many rows a data frame has before and after a
+join to catch any possible errors.
+
+
+
+```{r}
+
+# initial left data frame only has 3 rows
+nrow(x2)
+
+
+# left join when both the left and right tables have duplicate keys
+
+
+
+
+# output now has more rows than the initial table
+
+
+
+```
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+### Part 4.5c: Duplicate keys
+
+
+To deal with duplicate keys in both tables, we can join the tables **using
+multiple keys** in order to make sure that each row is uniquely specified.
+
+Try doing a left join on the data frames x2 and y2 using both the keys. Save the
+joined data frame to an object called `x2_joined_mult_keys`. Note that
+`x2_joined_mult_keys` has the same number of rows as the original `x2` data
+frame which is usually what we want when we do a left join.
+
+
+
+
+```{r}
+
+
+# initial left data frame only has 3 rows
+
+
+
+# join the data frame using multiple keys
+
+
+
+# output now only has 3 rows
+
+
+
+```
+
+
+
+
+
+$\\$ 
+
+
+
+
+
+
+
+### Part 4.5: Exploring the flight delays data
+
+
+Let's look at three data frames from the NYC flights delays data set:
+
+- `flights`: information on flights  
+- `airlines`: information on the airlines  
+- `weather`: information about the weather  
+
+
+
+```{r}
+
+
+library(nycflights13)
+
+data(flights)
+data(airlines)
+
+
+names(flights)
+names(airlines)
+
+
+# join airlines on to the flights data frame
+
+
+
+
+
+# delays for each airline
+
+
+
+
+
+
+# let's look at the weather too
+data(weather)
+
+dim(flights)
+dim(weather)
+
+
+# join the flights and the weather selecting only arrival delay and time 
+
+
+
+
+
+
+# join also including the airport location 
+
+
+
+
+
+
+# visualize the regression line to the data predicting delay from wind speed
+
+
+
+
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+
