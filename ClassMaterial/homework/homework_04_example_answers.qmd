@@ -1,0 +1,689 @@
+---
+title: "Homework 4"
+format:
+  closeread-html:
+    embed-resources: true
+    cr-section:
+      layout: "sidebar-left"
+    cr-style:
+       narrative-background-color-overlay: '#660044'
+       narrative-background-color-sidebar: '#660044'
+       narrative-text-color-overlay: '#FFFFFF'
+       narrative-text-color-sidebar: '#FFFFFF'
+       section-background-color: '#FFFFF'
+       narrative-font-family: 'AccanthisADFStd-Bold'
+       poem-font-family: 'AccanthisADFStd-Bold'
+       narrative-font-size: '18pt'
+---
+
+
+
+
+
+<!--  
+
+The purpose of this homework is to gain experience creating a Quarto Closeread
+scrollytelling document that brings together much of what you have learned in
+this class. A draft version of this Quarto document, along with the compiled
+.html document, must be submitted to Canvas by 11pm on Monday June 28th
+(however, I strongly recommend you submit your draft earlier so that you have
+some dedicated time to study for the final exam). You will be able to then
+revise your draft, and then submit a final version of the quarto/html document
+by 10pm on Wednesday June 30th.
+
+This document itself serves as a template for creating your Closeread
+scrollytelling document. It lays out sections and basic elements that should be
+in your scrollytelling document and describes a little about these sections.
+However, there is a fair amount of flexibility to deviate from this structure.
+
+In order to receive full credit for this homework, your scrollytelling document
+must contain the following elements:
+
+1. It should load a data set that you found on the internet (e.g., using the
+read.csv() function as you did on the first homework). (10 points). 
+
+2. It should use the dplyr library to either transform the data into a format
+you later use in our analyses, and/or it should use dplyr to creating summary
+statistics that are relevant to your analyses. (15 points)
+
+3. It should use ggplot2 to create one or more visualizations of the data that
+give insight into your question of interest. (25 points)
+
+4. It should contain at least one Closeread zooming and/or highlighting feature. 
+(10 points).
+
+5. It should tell a (a hopefully interesting) story about the data that using 
+scrollytelling elements (i.e., using narrative text that describes what is
+in the stickies). (20 points).
+
+6. The document should be visually appealing; i.e., you should choose a nice
+color scheme, your fonts should be a reasonable size, and you should pay
+attention to detail so that there is not miscellaneous irrelevant material in 
+your document. (15 points).
+
+
+
+In order to create your scrollytelling document, I recommend you use the
+following procedure:
+
+1. Find a data set that you are interested in analyzing, and outline the
+analyses that  you would like to do on the data. In particular, sketch out the
+figures you would like to create, the statistics you are interested in
+calculating, and the general story you would like to tell. Doing this on paper
+before writing any code could be useful.
+
+2. Once you have a good idea of what you want to do, I would recommend creating
+a new Quarto document or R script and creating all your analyses in this
+separate document. This will allow you to focus on the analyses without worrying
+about the scrollytelling elements.
+
+3. Finally, once you have created all your plots/analyses, you can then copy
+them into this Quarto/Closeread document and add the narrative text to create
+a final scrollytelling document. 
+
+
+As always if you need help with the homework, please attend the ULA office hours 
+(or my office hours). You can also ask questions on [Ed
+Discussions](https://edstem.org/us/courses/77222/discussion) although some of
+the issues might be harder to debug over Ed so attending in person office hours
+are highly recommended. Also, as always, please help others out by answering 
+questions on Ed Discussions and/or helping each other in person. 
+
+With this homework assignments, it is particularly important to render your
+document often to catch any mistakes right away so you will know where the
+mistake was made. If you don't render often, it will be much harder to find
+where the errors are occurring. Consequently, it will be much harder to fix
+them!
+
+
+Notes: 
+
+1. This is a challenging assignment. Try your best to come up with an
+interesting story that includes the elements listed above. We will be relatively
+relaxed in the grading of this assignment as long as a good effort was put in.
+Also, remember that you need to study for the final exam so please manage your
+time (and ambition on this project) accordingly.
+
+2. This shiny app I created could be useful for figuring out colors and other
+elements to use in your scrollytelling document: https://ethan-meyers-test.shinyapps.io/scrollytellr/
+
+
+--> 
+
+
+
+
+
+<!--  
+
+Please run the code in the  R chunk below once. This will install the
+Closeread quarto extension directory called _extensions that is needed to create
+Closeread documents. 
+
+-->
+
+
+```{r message=FALSE, warning = FALSE, echo = FALSE, eval = FALSE}
+
+install_closeread <- function() {
+  system("quarto add --no-prompt qmd-lab/closeread")
+}
+
+install_closeread()
+
+
+```
+
+
+
+
+
+$\\$
+
+
+
+
+
+## Introduction 
+
+<!--  
+
+Please describe:
+
+1. What question you are addressing here. 
+
+2. A bit of information about the data you will analyze; i.e., where you got the
+data from, including a link to the website where you got the data if applicable.
+
+3. State whether you believe the data is reliable or not.
+
+--> 
+
+
+This scrollytelling explores how the mean height of men has changed from 1896 to
+1996 in different countries in the world.
+
+
+
+$\\$
+
+
+
+**Questions I will look at are:**
+
+1. How has the mean height of men in different countries and continents changed
+over time?
+
+2. Which countries have the tallest and shortest mean height in 1996 (the most
+recent year in the data)?
+
+3. Which country showed the greatest change in mean height from 1896 to 1996? 
+
+The data comes from [Our World in Data](https://ourworldindata.org/), and was 
+compiled by the [NCD Risk Factor Collaboration](https://www.ncdrisc.org/) based 
+on a paper in [The Lancet](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)31859-6/fulltext).
+
+While the Lancent is a well-respected journal, I do not know much about the data
+itself so I not sure exactly how reliable it is.
+
+
+
+
+$\\$
+
+
+
+
+
+## Loading and tranforming the data
+
+
+
+<!--  
+
+Briefly discuss how you transformed the data into shape for your analyses.
+Please include the code you used to load and transform the data below describe:
+
+1. What transformations you did to the data, and why you did them.
+
+2. The key variables of interest in the data that you will analyze. 
+
+
+--> 
+
+
+Let's now load the data and transform it so that it is in a shape that is easy
+to analyze and visualize.
+
+
+$\\$
+
+
+$\\$
+
+
+
+::::{.cr-section}
+
+
+Let start by loading the data from the Our World In Data GitHub repository. [@cr-load_data]{highlight='1-6'}
+
+And also define a function that will help display the data in feet and inches. [@cr-load_data]{highlight='8-20'}
+
+
+We can then transform the data by: @cr-transform_data 
+
+Adding a variable that contains the name of the continent that each country is in. [@cr-transform_data]{highlight='4-10'}
+
+Converting the mean height from centimeters to inches, so I can plot the results in more familiar units. [@cr-transform_data]{highlight='11'}
+
+
+Formatting the height as a string in the format `feet' inches"`, so I can display the units nicely in the plots. [@cr-transform_data]{highlight='12'}
+
+
+Selecting only the relevant columns for my analysis[@cr-transform_data]{highlight='13'}
+
+
+The relevant variables for my analyses are:      
+- `Entity`: The country name   
+- `Year`: The year of the measurement                   
+- `height_inches`: The mean height of men in inches          
+- `continent`: The continent of the country  @cr-display_data     
+
+
+:::{#cr-load_data}
+
+
+```{r load_data, warning = FALSE, message = FALSE, echo = TRUE}
+
+# Load the data
+
+data_set_url <- paste0("https://raw.githubusercontent.com/owid/owid-datasets/refs/heads/master/",
+  "datasets/Human%20Height%20-%20NCD%20RisC%20(2017)/Human%20Height%20-%20NCD%20RisC%20(2017).csv")
+
+height_data <- read.csv(data_set_url)
+
+
+# Function to format height as "feet' inches""
+format_height <- function(height_values) {
+  feet <- floor(height_values / 12)
+  inches <- round(height_values %% 12, 1)
+  paste0(feet, "' ", inches, '"') 
+}
+
+
+```
+
+:::
+
+
+
+:::{#cr-transform_data}
+
+```{r transform_data, echo = TRUE, message = FALSE, warning = FALSE}
+
+library(dplyr)
+library(countrycode)
+
+
+# Add continent, convert height to inches, format height as string, and select relevant columns
+height_data <- height_data |>
+  mutate(continent = countrycode(Entity, 
+                                 origin = "country.name", 
+                                 destination = "continent")) |>
+  filter(!is.na(continent)) |>
+  mutate(height_inches = Mean.male.height..cm. * 0.393701) |>
+  mutate(height_inches_string = format_height(height_inches)) |>
+  select(Entity, Year, height_inches, continent, height_inches_string)
+  
+```
+
+:::
+
+
+
+:::{#cr-display_data}
+
+
+```{r display_initial_data, echo = FALSE, message = FALSE, warning = FALSE}
+
+set.seed(100)
+
+# Display 6 random rows
+sample_n(height_data, 6)
+
+```
+
+:::
+
+
+
+::::
+
+
+
+$\\$
+
+
+## Results
+
+
+
+<!--  
+
+Create one or more plots and  summary statistics of your data. Using scrollytelling
+narrative text, please describe:
+
+1. What the plots/analyses show.
+
+2. Why they are of interest to your analysis. 
+
+
+Please be sure to make plots as clear as possible (clear axis labeling, legends
+and captions, and using an appropriate type of visualization) so that it is easy
+for the reader to quickly understand the central information being conveyed.
+
+--> 
+
+
+
+### Analysis 1: Changes height in time and across continents
+
+
+$\\$
+
+
+To start our analysis, let's look at how the mean heights have changed over
+time, and how the mean heights compare between different continents. 
+
+
+
+$\\$
+
+$\\$
+
+
+::::{.cr-section}
+
+
+Here we plot how the mean height of countries change over time. @cr-continents_over_time
+
+Each line corresponds to a country, and the visualization is faceted by continent. @cr-continents_over_time
+
+As we can see, the mean height generally has increased over time for all countries. @cr-continents_over_time
+
+
+We can also look at the mean height of continents by averaging the heights of all countries in a continent. @cr-mean-continents 
+
+The results show that the mean height has increased in all continents and that the mean height is highest in Europe. @cr-mean-continents
+
+
+
+:::{#cr-continents_over_time}
+
+```{r result_1a, echo = TRUE}
+
+library(ggplot2)
+
+height_data |>
+  ggplot(aes(Year, height_inches, col = Entity)) + 
+  geom_line() +
+  facet_wrap(~continent) +
+  theme(legend.position = "none") + 
+  scale_y_continuous(labels = format_height) +
+  labs(y = "Height")
+
+```
+
+:::
+
+
+
+:::{#cr-mean-continents}
+
+```{r result_1b, message = FALSE, echo = TRUE}
+
+
+mean_continent_heights <- height_data |>
+  group_by(Year, continent) |>
+  summarize(mean_height = mean(height_inches))
+
+mean_continent_heights |>
+  ggplot(aes(Year, mean_height, col = continent)) + 
+  geom_line() + 
+  scale_y_continuous(labels = format_height) +
+  labs(y = "Height",
+       title = "Mean Height by Continent")
+
+
+```
+
+:::
+
+
+::::
+
+
+
+
+
+$\\$
+
+
+
+### Analysis 2: Tallest and shortest mean height in 1996
+
+
+$\\$
+
+
+Let's now explore the countries with the tallest and shortest mean height in
+1996, which is the most recent year in the data.
+
+
+
+
+$\\$
+
+$\\$
+
+
+
+::::{.cr-section}
+
+
+Here we plot the mean height for each country in 1996 (i.e., each point is a
+country). @cr-tallest_and_shortest
+
+We can see a large range in the heights from different countries.
+[@cr-tallest_and_shortest]
+
+Any guesses which country had the tallest mean height?
+[@cr-tallest_and_shortest]{pan-to="-50%, 50%" scale-by="3"}
+
+Using dplyr we can see the answer is the Netherlands [@cr-tallest_answer]
+
+Likewise we can see that the country with the shortest mean height in 1996 is
+Yemen. [@cr-shortest_answer]
+
+Here is an interactive plot where you can look at the mean heights for all
+countries in 1996. [@cr-tallest_shortest_interactive]
+
+
+:::{#cr-tallest_and_shortest}
+```{r result_2a, message=FALSE, warning= FALSE, echo = TRUE}
+
+library(plotly)
+library(ggbeeswarm)
+
+height_data |>
+  filter(Year == 1996) |>
+  ggplot(aes(x = continent, y = height_inches, col = Entity, text = height_inches_string)) +
+  geom_beeswarm() + 
+  theme(legend.position = "none") + 
+  scale_y_continuous(labels = format_height) + 
+  labs(y = "Height",
+       x = "")
+
+
+```
+
+:::
+
+
+:::{#cr-tallest_answer}
+```{r result_2b, message=FALSE, warning= FALSE, echo = TRUE}
+
+height_data |>
+  filter(Year == 1996) |>
+  slice_max(height_inches)
+
+```
+:::
+
+
+:::{#cr-shortest_answer}
+```{r result_2c, message=FALSE, warning= FALSE, echo = TRUE}
+
+height_data |>
+  filter(Year == 1996) |>
+  slice_min(height_inches)
+
+```
+:::
+
+
+:::{#cr-tallest_shortest_interactive}
+```{r result_2d, message=FALSE, warning= FALSE}
+
+library(plotly)
+
+
+g <- height_data |>
+  filter(Year == 1996) |>
+  ggplot(aes(x = continent, y = height_inches, col = Entity, text = height_inches_string)) +
+  geom_beeswarm() + 
+  theme(legend.position = "none") + 
+  scale_y_continuous(labels = format_height) +
+  labs(y = "Height", x = "")
+
+
+ggplotly(g)
+
+
+```
+:::
+
+
+
+
+::::
+
+
+
+$\\$
+
+
+
+### Analysis 3: Greatest change in heights from 1896 to 1996
+
+
+$\\$
+
+
+Finally, let's explore which country had the greatest change in mean height from
+1896 to 1996. We will calculate the difference in mean height for each country
+and then plot the results.
+
+
+
+$\\$
+
+
+$\\$
+
+
+
+::::{.cr-section}
+
+
+Here we calculate the change in height for each country from 1896 to 1996. @cr-change_in_height_transformation
+
+From looking at the results we see the biggest change in height was in Iran where the average height increased by 6.5". @cr-change_in_height_transformation
+
+Here is an interactive visualization where you can explore change in heights of different countries. @cr-change_in_height_plotly
+
+
+:::{#cr-change_in_height_transformation}
+```{r result_3a, message=FALSE, echo = TRUE, warning= FALSE}
+
+library(tidyr)
+
+change_heights_df <- height_data |>
+  select(-height_inches_string) |>
+  filter(Year %in% c(1896, 1996)) |>
+  pivot_wider(names_from = Year, values_from = height_inches) |>
+  mutate(change_in_height = round(`1996` - `1896`, 2)) |>
+  arrange(desc(change_in_height))
+
+
+head(change_heights_df)
+
+```
+:::
+
+
+
+:::{#cr-change_in_height_plotly}
+```{r result_3b, message=FALSE, echo = TRUE, warning= FALSE}
+
+g <- change_heights_df |>
+  ggplot(aes(x = continent, y = change_in_height, col = Entity)) +
+  geom_beeswarm() + 
+  theme(legend.position = "none") + 
+  labs(y = "Change in Height (inches)",
+       x = "",
+       title = "Change in Mean Height from 1896 to 1996") 
+
+
+ggplotly(g)
+
+```
+:::
+
+
+
+::::
+
+
+
+$\\$
+
+
+## Conclusion 
+
+
+
+<!--  
+
+Please summarize what you found, and possible future directions. 
+
+-->
+
+
+
+In this analysis, we explored how the mean height of people in different
+countries has changed over time, specifically from 1896 to 1996. We found that:
+
+1. The mean height has generally increased across all continents, with Europe
+having the highest mean height.
+
+2. The country with the tallest mean height in 1996 was the Netherlands, while
+the country with the shortest mean height was Yemen.
+
+3. The country with the greatest change in mean height from 1896 to 1996 was
+Iran, where the average height increased by 6.5 inches.
+
+Questions that remain are what is the reason for the differences in mean height
+across countries and continents, and why have they changed over time. Future
+analyses could explore the factors that contribute to these differences, such as
+nutrition, health care, and socioeconomic status. This could be done by
+combining the data used here with other data sets such as the Gapminder data.
+Additionally, it would be interesting to see how these trends continue in the
+years following 1996.
+
+
+
+$\\$
+
+
+
+## Reflection
+
+
+<!--  
+
+Reflection  
+
+Write one paragraph describing what went well with this project and what was
+more difficult. Also describe any additional things you tried that you did not
+end up including in this write-up, and approximately how much time you spend
+working the project.
+
+Finally, please go to Canvas and submit this Closeread Quarto document, along
+with the rendered .html document. Also, fill out the reflection questions to let
+know how the this homework went.
+
+
+-->
+
+
+
+I am a little concerned this homework might be a bit too difficult, but I will
+see how everyone does!
+
+
+
+
+
+
